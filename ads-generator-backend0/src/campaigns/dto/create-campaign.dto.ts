@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsEnum } from 'class-validator'
+import { IsString, IsOptional, IsEnum ,IsBoolean} from 'class-validator'
 import { CampaignStatus } from '@prisma/client'
 
 export class CreateCampaignDto {
@@ -10,6 +10,7 @@ export class CreateCampaignDto {
   description?: string
 
   @IsEnum(CampaignStatus)
+  @IsOptional()
   @IsOptional()
   status?: CampaignStatus
 }

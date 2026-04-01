@@ -21,6 +21,11 @@ export class AdsController {
     return this.adsService.create(user.id, dto)
   }
 
+  @Get('stats')
+  getGlobalStats(@CurrentUser() user: any) {
+    return this.adsService.getGlobalStats(user.id)
+  }
+
   // GET /ads
   @Get()
   findAll(@CurrentUser() user: any) {

@@ -5,6 +5,7 @@ import { PrismaService } from '../prisma/prisma.service'
 import { CreateAdDto } from './dto/create-ad.dto'
 import { UpdateAdDto } from './dto/update-ad.dto'
 import { CacheService } from '../cache/cache.service'
+import { AdStatus } from '@prisma/client';
 
 @Injectable()
 export class AdsService {
@@ -59,16 +60,32 @@ export class AdsService {
 
   // Update ad
   async update(id: string, userId: string, dto: UpdateAdDto) {
-    await this.findOne(id, userId)
-    const ad = await this.prisma.db.ad.update({
-      where: { id },
-      data: { ...dto },
-    })
-    await this.cacheService.del(`ads:${id}`)
-    await this.cacheService.del(`ads:user:${userId}`)
-    return ad
+  // 1. Verify ownership and existence
+  await this.findOne(id, userId);
+
+  // 2. Prepare the update data
+  const updateData: any = { ...dto };
+
+  // 3. AUTO-STATUS LOGIC: If campaignId is being updated
+  if (dto.campaignId) {
+    // If assigned to a campaign, force status to ACTIVE
+    updateData.status = AdStatus.ACTIVE;
+  } else if (dto.campaignId === null) {
+    // If explicitly unlinked from a campaign, move back to DRAFT
+    updateData.status = AdStatus.DRAFT;
   }
 
+  const ad = await this.prisma.db.ad.update({
+    where: { id },
+    data: updateData,
+  });
+
+  // 4. Cache Invalidation
+  await this.cacheService.del(`ads:${id}`);
+  await this.cacheService.del(`ads:user:${userId}`);
+  
+  return ad;
+}
   // Delete ad
   async remove(id: string, userId: string) {
     await this.findOne(id, userId)
@@ -96,4 +113,33 @@ export class AdsService {
     })
     return analytics ?? { adId: id, views: 0, clicks: 0, impressions: 0 }
   }
+
+  // Inside AdsService (src/ads/ads.service.ts)
+
+async getGlobalStats(userId: string) {
+  const [totalAds, activeAds, totalCampaigns] = await Promise.all([
+    // 1. Total ads created by the user
+    this.prisma.db.ad.count({ where: { userId } }),
+    
+    // 2. ONLY ads that are linked to campaigns (now automatically ACTIVE)
+    this.prisma.db.ad.count({ 
+      where: { 
+        userId, 
+        status: AdStatus.ACTIVE 
+      } 
+    }),
+
+    // 3. Total campaigns created by the user
+    this.prisma.db.campaign.count({ where: { userId } }),
+  ]);
+
+  return {
+    totalAds,
+    publishedAds: activeAds, 
+    totalCampaigns,
+  };
+}
+
+
+
 }

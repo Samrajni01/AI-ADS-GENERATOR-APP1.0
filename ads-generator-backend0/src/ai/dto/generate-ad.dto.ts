@@ -1,4 +1,4 @@
-import { IsString, IsEnum, IsOptional } from 'class-validator'
+import { IsString, IsEnum, IsOptional ,IsBoolean } from 'class-validator'
 import { Platform } from '@prisma/client'
 
 export class GenerateAdDto {
@@ -19,4 +19,12 @@ export class GenerateAdDto {
   @IsString()
   @IsOptional()
   productName?: string
+
+  @IsBoolean()
+  @IsOptional()
+  includeImage?: boolean 
+//new update for campaign association
+  @IsString()
+  @IsOptional()
+  campaignId?: string
 }

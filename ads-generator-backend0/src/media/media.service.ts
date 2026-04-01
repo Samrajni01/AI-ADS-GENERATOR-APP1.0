@@ -11,7 +11,9 @@ import { v4 as uuidv4 } from 'uuid'
 
 @Injectable()
 export class MediaService {
-  private uploadDir = './uploads'
+  // ✅
+//private uploadDir = path.join(__dirname, '..', '..', 'uploads')
+private uploadDir = path.join(process.cwd(), 'uploads');
 
   constructor(
     private prisma: PrismaService,
@@ -44,6 +46,7 @@ export class MediaService {
         originalName: file.originalname,
         mimetype: file.mimetype,
         size: file.size,
+        //url: filename,
         url: `/uploads/${filename}`,
         userId,
       },

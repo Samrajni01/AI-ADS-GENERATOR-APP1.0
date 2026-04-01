@@ -39,12 +39,14 @@ model Campaign {
   name        String
   description String?
   status      CampaignStatus @default(DRAFT)
+   isPublic    Boolean       @default(false) // ← NEW
   userId      String
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   ads  Ad[]
+  media Media[]
 
   @@map("campaigns")
 }
@@ -83,6 +85,7 @@ enum CampaignStatus {
 enum AdStatus {
   DRAFT
   PUBLISHED
+  ACTIVE
   ARCHIVED
 }
 
@@ -99,10 +102,19 @@ model Ad {
   id         String   @id @default(uuid())
   title      String
   body       String
+  callToAction   String?
   imageUrl   String?
   platform   Platform
   status     AdStatus @default(DRAFT)
+  //edit fields
   prompt     String?
+  productName    String?     // ← MISSING: Add this
+  targetAudience String?     // ← MISSING: Add this
+  tone           String?     // ← MISSING: Add this
+  imagePrompt String?  @db.Text 
+  
+  // If you want to store the final image URL later:
+  
   userId     String
   campaignId String?
   createdAt  DateTime @default(now())
@@ -139,6 +151,11 @@ model Media {
   size         Int
   url          String
   userId       String
+
+  campaignId   String?  
+  campaign     Campaign? @relation(fields: [campaignId], references: [id])
+
+
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)

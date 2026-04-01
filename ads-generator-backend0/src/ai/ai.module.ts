@@ -3,9 +3,10 @@ import { BullModule } from '@nestjs/bull'
 import { AiService } from './ai.service'
 import { AiController } from './ai.controller'
 import { AiProcessor } from '../queue/ai.processor'
+import { MediaModule } from 'src/media/media.module'
 
 @Module({
-  imports: [
+  imports: [MediaModule,
     BullModule.registerQueue({ name: 'ai' }),
   ],
   controllers: [AiController],
