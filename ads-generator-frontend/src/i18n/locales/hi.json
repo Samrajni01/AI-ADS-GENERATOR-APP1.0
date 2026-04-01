@@ -1,0 +1,110 @@
+{
+  "common": {
+    "loading": "लोड हो रहा है...",
+    "error": "कुछ गलत हो गया",
+    "save": "सहेजें",
+    "cancel": "रद्द करें",
+    "delete": "हटाएं",
+    "edit": "संपादित करें",
+    "create": "बनाएं",
+    "update": "अपडेट करें",
+    "search": "खोजें",
+    "filter": "फ़िल्टर",
+    "submit": "जमा करें",
+    "back": "वापस",
+    "next": "अगला",
+    "yes": "हाँ",
+    "no": "नहीं",
+    "confirm": "पुष्टि करें"
+  },
+  "auth": {
+    "login": "लॉगिन",
+    "register": "रजिस्टर",
+    "logout": "लॉगआउट",
+    "email": "ईमेल",
+    "password": "पासवर्ड",
+    "name": "पूरा नाम",
+    "confirmPassword": "पासवर्ड की पुष्टि करें",
+    "forgotPassword": "पासवर्ड भूल गए?",
+    "resetPassword": "पासवर्ड रीसेट करें",
+    "changePassword": "पासवर्ड बदलें",
+    "oldPassword": "पुराना पासवर्ड",
+    "newPassword": "नया पासवर्ड",
+    "verifyOtp": "OTP सत्यापित करें",
+    "sendOtp": "OTP भेजें",
+    "otp": "OTP दर्ज करें",
+    "googleLogin": "Google से जारी रखें",
+    "noAccount": "खाता नहीं है?",
+    "haveAccount": "पहले से खाता है?",
+    "registerSuccess": "पंजीकरण सफल! कृपया अपना ईमेल सत्यापित करें।",
+    "loginSuccess": "लॉगिन सफल!",
+    "otpSent": "OTP सफलतापूर्वक भेजा गया!",
+    "otpVerified": "OTP सफलतापूर्वक सत्यापित!"
+  },
+  "nav": {
+    "dashboard": "डैशबोर्ड",
+    "ads": "विज्ञापन",
+    "campaigns": "अभियान",
+    "ai": "AI जनरेटर",
+    "media": "मीडिया",
+    "settings": "सेटिंग्स",
+    "profile": "प्रोफ़ाइल"
+  },
+  "dashboard": {
+    "title": "डैशबोर्ड",
+    "totalAds": "कुल विज्ञापन",
+    "totalCampaigns": "कुल अभियान",
+    "totalClicks": "कुल क्लिक",
+    "totalImpressions": "कुल इंप्रेशन",
+    "recentAds": "हाल के विज्ञापन",
+    "welcome": "वापस स्वागत है"
+  },
+  "ads": {
+    "title": "विज्ञापन",
+    "createAd": "विज्ञापन बनाएं",
+    "editAd": "विज्ञापन संपादित करें",
+    "deleteAd": "विज्ञापन हटाएं",
+    "adTitle": "विज्ञापन शीर्षक",
+    "adBody": "विज्ञापन सामग्री",
+    "platform": "प्लेटफ़ॉर्म",
+    "status": "स्थिति",
+    "noAds": "कोई विज्ञापन नहीं मिला",
+    "createFirst": "अपना पहला विज्ञापन बनाएं"
+  },
+  "campaigns": {
+    "title": "अभियान",
+    "createCampaign": "अभियान बनाएं",
+    "editCampaign": "अभियान संपादित करें",
+    "deleteCampaign": "अभियान हटाएं",
+    "campaignName": "अभियान नाम",
+    "description": "विवरण",
+    "status": "स्थिति",
+    "noCampaigns": "कोई अभियान नहीं मिला",
+    "createFirst": "अपना पहला अभियान बनाएं"
+  },
+  "ai": {
+    "title": "AI विज्ञापन जनरेटर",
+    "prompt": "अपना विज्ञापन वर्णन करें",
+    "generate": "विज्ञापन बनाएं",
+    "generateVariations": "विविधताएं बनाएं",
+    "tone": "टोन",
+    "targetAudience": "लक्षित दर्शक",
+    "productName": "उत्पाद नाम",
+    "generating": "बना रहे हैं..."
+  },
+  "media": {
+    "title": "मीडिया",
+    "upload": "फ़ाइल अपलोड करें",
+    "noMedia": "कोई मीडिया नहीं मिला",
+    "uploadFirst": "अपनी पहली फ़ाइल अपलोड करें"
+  },
+  "settings": {
+    "title": "सेटिंग्स",
+    "profile": "प्रोफ़ाइल",
+    "security": "सुरक्षा",
+    "language": "भाषा",
+    "theme": "थीम",
+    "darkMode": "डार्क मोड",
+    "lightMode": "लाइट मोड"
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "update": "Update",
+    "search": "Search",
+    "filter": "Filter",
+    "submit": "Submit",
+    "back": "Back",
+    "next": "Next",
+    "yes": "Yes",
+    "no": "No",
+    "confirm": "Confirm"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "name": "Full Name",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot Password?",
+    "resetPassword": "Reset Password",
+    "changePassword": "Change Password",
+    "oldPassword": "Old Password",
+    "newPassword": "New Password",
+    "verifyOtp": "Verify OTP",
+    "sendOtp": "Send OTP",
+    "otp": "Enter OTP",
+    "googleLogin": "Continue with Google",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "registerSuccess": "Registration successful! Please verify your email.",
+    "loginSuccess": "Login successful!",
+    "otpSent": "OTP sent successfully!",
+    "otpVerified": "OTP verified successfully!"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "ads": "Ads",
+    "campaigns": "Campaigns",
+    "ai": "AI Generator",
+    "media": "Media",
+    "settings": "Settings",
+    "profile": "Profile"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "totalAds": "Total Ads",
+    "totalCampaigns": "Total Campaigns",
+    "totalClicks": "Total Clicks",
+    "totalImpressions": "Total Impressions",
+    "recentAds": "Recent Ads",
+    "welcome": "Welcome back"
+  },
+  "ads": {
+    "title": "Ads",
+    "createAd": "Create Ad",
+    "editAd": "Edit Ad",
+    "deleteAd": "Delete Ad",
+    "adTitle": "Ad Title",
+    "adBody": "Ad Body",
+    "platform": "Platform",
+    "status": "Status",
+    "noAds": "No ads found",
+    "createFirst": "Create your first ad"
+  },
+  "campaigns": {
+    "title": "Campaigns",
+    "createCampaign": "Create Campaign",
+    "editCampaign": "Edit Campaign",
+    "deleteCampaign": "Delete Campaign",
+    "campaignName": "Campaign Name",
+    "description": "Description",
+    "status": "Status",
+    "noCampaigns": "No campaigns found",
+    "createFirst": "Create your first campaign"
+  },
+  "ai": {
+    "title": "AI Ad Generator",
+    "prompt": "Describe your ad",
+    "generate": "Generate Ad",
+    "generateVariations": "Generate Variations",
+    "tone": "Tone",
+    "targetAudience": "Target Audience",
+    "productName": "Product Name",
+    "generating": "Generating..."
+  },
+  "media": {
+    "title": "Media",
+    "upload": "Upload File",
+    "noMedia": "No media found",
+    "uploadFirst": "Upload your first file"
+  },
+  "settings": {
+    "title": "Settings",
+    "profile": "Profile",
+    "security": "Security",
+    "language": "Language",
+    "theme": "Theme",
+    "darkMode": "Dark Mode",
+    "lightMode": "Light Mode"
+  }
+}

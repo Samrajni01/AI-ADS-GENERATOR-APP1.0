@@ -1,0 +1,110 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "error": "Algo salió mal",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear",
+    "update": "Actualizar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "submit": "Enviar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "yes": "Sí",
+    "no": "No",
+    "confirm": "Confirmar"
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "logout": "Cerrar sesión",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "name": "Nombre completo",
+    "confirmPassword": "Confirmar contraseña",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "resetPassword": "Restablecer contraseña",
+    "changePassword": "Cambiar contraseña",
+    "oldPassword": "Contraseña antigua",
+    "newPassword": "Nueva contraseña",
+    "verifyOtp": "Verificar OTP",
+    "sendOtp": "Enviar OTP",
+    "otp": "Ingresar OTP",
+    "googleLogin": "Continuar con Google",
+    "noAccount": "¿No tienes una cuenta?",
+    "haveAccount": "¿Ya tienes una cuenta?",
+    "registerSuccess": "¡Registro exitoso! Por favor verifica tu correo.",
+    "loginSuccess": "¡Inicio de sesión exitoso!",
+    "otpSent": "¡OTP enviado exitosamente!",
+    "otpVerified": "¡OTP verificado exitosamente!"
+  },
+  "nav": {
+    "dashboard": "Panel",
+    "ads": "Anuncios",
+    "campaigns": "Campañas",
+    "ai": "Generador IA",
+    "media": "Medios",
+    "settings": "Configuración",
+    "profile": "Perfil"
+  },
+  "dashboard": {
+    "title": "Panel",
+    "totalAds": "Total de anuncios",
+    "totalCampaigns": "Total de campañas",
+    "totalClicks": "Total de clics",
+    "totalImpressions": "Total de impresiones",
+    "recentAds": "Anuncios recientes",
+    "welcome": "Bienvenido de nuevo"
+  },
+  "ads": {
+    "title": "Anuncios",
+    "createAd": "Crear anuncio",
+    "editAd": "Editar anuncio",
+    "deleteAd": "Eliminar anuncio",
+    "adTitle": "Título del anuncio",
+    "adBody": "Contenido del anuncio",
+    "platform": "Plataforma",
+    "status": "Estado",
+    "noAds": "No se encontraron anuncios",
+    "createFirst": "Crea tu primer anuncio"
+  },
+  "campaigns": {
+    "title": "Campañas",
+    "createCampaign": "Crear campaña",
+    "editCampaign": "Editar campaña",
+    "deleteCampaign": "Eliminar campaña",
+    "campaignName": "Nombre de campaña",
+    "description": "Descripción",
+    "status": "Estado",
+    "noCampaigns": "No se encontraron campañas",
+    "createFirst": "Crea tu primera campaña"
+  },
+  "ai": {
+    "title": "Generador de anuncios IA",
+    "prompt": "Describe tu anuncio",
+    "generate": "Generar anuncio",
+    "generateVariations": "Generar variaciones",
+    "tone": "Tono",
+    "targetAudience": "Público objetivo",
+    "productName": "Nombre del producto",
+    "generating": "Generando..."
+  },
+  "media": {
+    "title": "Medios",
+    "upload": "Subir archivo",
+    "noMedia": "No se encontraron medios",
+    "uploadFirst": "Sube tu primer archivo"
+  },
+  "settings": {
+    "title": "Configuración",
+    "profile": "Perfil",
+    "security": "Seguridad",
+    "language": "Idioma",
+    "theme": "Tema",
+    "darkMode": "Modo oscuro",
+    "lightMode": "Modo claro"
+  }
+}
