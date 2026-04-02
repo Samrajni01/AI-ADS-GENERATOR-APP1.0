@@ -12,6 +12,15 @@ import { Media } from '../../../src/types/media.types'
 import { formatDate } from '../../../lib/utils'
 import { motion, AnimatePresence } from 'framer-motion'
 
+const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001').replace(/\/$/, "");
+
+const getFullImageUrl = (url: string) => {
+  if (!url) return "";
+  if (url.startsWith('http')) return url;
+  const path = url.replace(/^\//, "");
+  return `${BASE_URL}/${path}`;
+};
+
 export default function MediaPage() {
   const router = useRouter()
   const { data: media, isLoading } = useMedia()
@@ -54,18 +63,16 @@ export default function MediaPage() {
 
   if (isLoading) return <LoadingSpinner />
 
-  // Warm, Earthy Tones to match the light brown background
   const warmGradients = [
-    'linear-gradient(135deg, #7f1d1d 0%, #b45309 100%)', // Red to Amber
-    'linear-gradient(135deg, #451a03 0%, #92400e 100%)', // Deep Brown to Orange
-    'linear-gradient(135deg, #78350f 0%, #d97706 100%)', // Amber variant
+    'linear-gradient(135deg, #7f1d1d 0%, #b45309 100%)',
+    'linear-gradient(135deg, #451a03 0%, #92400e 100%)',
+    'linear-gradient(135deg, #78350f 0%, #d97706 100%)',
   ]
 
   return (
     <div className="min-h-screen pb-20 px-6 lg:px-10" style={{ backgroundColor: '#F5F2ED' }}>
       <div className="max-w-7xl mx-auto w-full">
         
-        {/* Header Section */}
         <div className="mb-12 pt-8">
           <motion.div className="flex items-end justify-between" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
             <div>
@@ -96,7 +103,6 @@ export default function MediaPage() {
         {!media || media.length === 0 ? (
           <EmptyState icon={Sparkles} title="No media yet" description="Upload your professional shots to start building campaigns." />
         ) : (
-          /* True Masonry Grid */
           <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6">
             <AnimatePresence>
               {media.map((item: Media, index: number) => (
@@ -106,19 +112,17 @@ export default function MediaPage() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                 >
-                  {/* Media Wrapper */}
                   <div className="relative rounded-[2rem] overflow-hidden cursor-pointer group-hover:shadow-lg transition-all" onClick={() => setSelectedImage(item)}>
                     <img 
-                      src={`http://localhost:3001${item.url}`} 
+                      src={getFullImageUrl(item.url)}
                       alt={item.originalName} 
                       className="w-full h-auto object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-500" 
                     />
                     
-                    {/* Hover Overlay */}
                     <div className="absolute inset-0 bg-red-950/40 opacity-0 group-hover:opacity-100 transition-all flex flex-col justify-between p-4">
                       <div className="flex justify-end">
                         <div className="p-2 bg-white/20 backdrop-blur-md rounded-xl text-white">
-                           <Maximize2 className="w-4 h-4" />
+                            <Maximize2 className="w-4 h-4" />
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
@@ -128,7 +132,6 @@ export default function MediaPage() {
                     </div>
                   </div>
 
-                  {/* Details & Actions */}
                   <div className="p-4">
                     <div className="flex justify-between items-start mb-4">
                       <div>
@@ -189,7 +192,6 @@ export default function MediaPage() {
           </div>
         )}
 
-        {/* Fullscreen Lightbox */}
         <AnimatePresence>
           {selectedImage && (
             <motion.div 
@@ -202,7 +204,7 @@ export default function MediaPage() {
               </button>
               <motion.img 
                 initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }}
-                src={`http://localhost:3001${selectedImage.url}`} 
+                src={getFullImageUrl(selectedImage.url)}
                 className="max-w-full max-h-full rounded-3xl shadow-2xl border-4 border-white/10"
                 onClick={(e) => e.stopPropagation()}
               />
