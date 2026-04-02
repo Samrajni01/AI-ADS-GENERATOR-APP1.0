@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react' // Added Suspense here
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
@@ -20,7 +20,8 @@ const resetSchema = z.object({
 
 type ResetForm = z.infer<typeof resetSchema>
 
-export default function ResetPasswordPage() {
+// 1. We move your logic into this internal component
+function ResetPasswordFormContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const token = searchParams.get('token') || ''
@@ -203,5 +204,18 @@ export default function ResetPasswordPage() {
         </p>
       </div>
     </div>
+  )
+}
+
+// 2. This is the Export that Vercel uses to build the page
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-[#080808]">
+        <Loader2 className="w-10 h-10 animate-spin text-[#f59e0b]" />
+      </div>
+    }>
+      <ResetPasswordFormContent />
+    </Suspense>
   )
 }
