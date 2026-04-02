@@ -1,13 +1,14 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useRef, useState, Suspense } from 'react' // Added Suspense here
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { toast } from 'sonner'
 import { Loader2, Zap, Mail } from 'lucide-react'
 import { useVerifyOtp, useSendOtp } from '../../../src/hooks/useAuth'
 
-export default function VerifyOtpPage() {
+// 1. All your original logic goes inside this component
+function VerifyOtpContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const email = searchParams.get('email') || ''
@@ -50,9 +51,8 @@ export default function VerifyOtpPage() {
     verifyOtp(
       { email, otp: otpString },
       {
-       onSuccess: () => {
+        onSuccess: () => {
           toast.success('Email verified successfully!')
-          // Change this from router.push to window.location
           window.location.href = '/dashboard' 
         },
         onError: (err: any) => {
@@ -195,4 +195,17 @@ export default function VerifyOtpPage() {
       </div>
     </div>
   )
-}//http://localhost:3000/verify-otp?email=test@gmail.com
+}
+
+// 2. This wrapper fixes the Vercel Prerender error
+export default function VerifyOtpPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-[#080808]">
+        <Loader2 className="w-10 h-10 animate-spin text-[#f59e0b]" />
+      </div>
+    }>
+      <VerifyOtpContent />
+    </Suspense>
+  )
+}
