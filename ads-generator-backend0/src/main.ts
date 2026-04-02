@@ -33,7 +33,8 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:3000', 
-      'https://ai-ads-generator-app.vercel.app'
+      'https://ai-ads-generator-app.vercel.app',
+      'https://ai-ads-generator-ehj20e7zs-samrajni01s-projects.vercel.app'
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
