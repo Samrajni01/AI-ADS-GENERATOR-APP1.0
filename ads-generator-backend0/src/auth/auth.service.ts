@@ -295,7 +295,7 @@ export class AuthService {
   
 
   // Register with email/password
-  async register(dto: RegisterDto) {
+ /* async register(dto: RegisterDto) {
     try {
       const existing = await this.prisma.db.user.findUnique({
         where: { email: dto.email },
@@ -365,7 +365,77 @@ export class AuthService {
 
     const { password, ...result } = user;
     return { user: result, ...this.generateToken(user.id, user.email) };
+  }*/
+  async register(dto: RegisterDto) {
+  try {
+    // 1. Check if user already exists
+    const existing = await this.prisma.db.user.findUnique({
+      where: { email: dto.email },
+    });
+
+    // Generate these early so we can use them for Create OR Update
+    const hashed = await bcrypt.hash(dto.password, 10);
+    const otp = this.otpService.generateOtp();
+    const otpExpiry = this.otpService.generateExpiry();
+
+    let user;
+
+    if (existing) {
+      // 2. If the existing user is ALREADY verified, then we block them
+      if (existing.isVerified) {
+        throw new ConflictException('Email already in use and verified. Please login.');
+      }
+
+      // 3. IDEMPOTENT FLOW: If they aren't verified, just update their record with a new OTP
+      console.log(`Updating unverified user: ${dto.email} with a fresh OTP.`);
+      user = await this.prisma.db.user.update({
+        where: { email: dto.email },
+        data: {
+          password: hashed, // Update password in case they want to change it
+          name: dto.name,
+          otpCode: otp,
+          otpExpiry,
+        },
+      });
+    } else {
+      // 4. NEW USER FLOW: Standard creation
+      user = await this.prisma.db.user.create({
+        data: {
+          email: dto.email,
+          password: hashed,
+          name: dto.name,
+          otpCode: otp,
+          otpExpiry,
+          isVerified: false,
+        },
+      });
+    }
+
+    // 5. Send OTP (Same logic as before)
+    console.log(`Attempting to send OTP to ${user.email}...`);
+    try {
+      await this.otpService.sendEmailOtp(user.email, otp);
+    } catch (mailError) {
+      console.error('Mail delivery failed, but user record exists:', mailError);
+    }
+
+    // Use password: _ to avoid variable shadowing
+    const { password: _, ...result } = user;
+    
+    return {
+      user: result,
+      message: existing 
+        ? 'Account already existed but was unverified. A new OTP has been sent!' 
+        : 'Registration successful!',
+    };
+  } catch (error) {
+    // Make sure we don't accidentally turn our ConflictException into a 500 error
+    if (error instanceof ConflictException) throw error;
+    
+    console.error('--- REGISTRATION ERROR ---', error);
+    throw new InternalServerErrorException(error.message || 'Database Error');
   }
+}
 
   // Send OTP (email or phone)
   async sendOtp(email?: string, phone?: string) {
