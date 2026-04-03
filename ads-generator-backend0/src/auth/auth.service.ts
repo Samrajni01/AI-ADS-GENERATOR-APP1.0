@@ -267,14 +267,32 @@ export class AuthService {
   ) {}
 
   // Validate user for local strategy
-  async validateUser(email: string, password: string) {
+  /*async validateUser(email: string, password: string) {
     const user = await this.prisma.db.user.findUnique({ where: { email } });
     if (!user || !user.password) return null;
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return null;
     const { password: _, ...result } = user;
     return result;
+  }*/
+  async validateUser(email: string, password: string) {
+  const user = await this.prisma.db.user.findUnique({ where: { email } });
+  
+  if (!user || !user.password) return null;
+
+  // FIX: If isVerified is false, reject the login immediately
+  if (user.isVerified === false) {
+    throw new UnauthorizedException('Account not verified. Please verify your OTP first.');
   }
+
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) return null;
+
+  const { password: _, ...result } = user;
+  return result;
+}
+
+  
 
   // Register with email/password
   async register(dto: RegisterDto) {
@@ -295,11 +313,18 @@ export class AuthService {
           name: dto.name,
           otpCode: otp,
           otpExpiry,
+          isVerified: false,
         },
       });
 
       // Keep this commented out until you verify registration works in Prisma Studio
       // await this.otpService.sendEmailOtp(user.email, otp)
+      console.log(`Attempting to send first OTP to ${user.email}...`);
+       try {
+      await this.otpService.sendEmailOtp(user.email, otp);
+    } catch (mailError) {
+      console.error('Mail delivery failed, but user created:', mailError);
+    }
 
       const { password, ...result } = user;
       return {
@@ -391,18 +416,18 @@ export class AuthService {
     if (user.otpCode !== dto.otp) throw new BadRequestException('Invalid OTP');
     if (new Date() > user.otpExpiry) throw new BadRequestException('OTP expired');
 
-    await this.prisma.db.user.update({
-      where: { id: user.id },
-      data: {
-        isVerified: true,
-        otpCode: null,
-        otpExpiry: null,
-      },
-    });
+    const updatedUser = await this.prisma.db.user.update({
+    where: { id: user.id },
+    data: {
+      isVerified: true, // NOW they can log in
+      otpCode: null,
+      otpExpiry: null,
+    },
+  });
 
     return {
       message: 'OTP verified successfully',
-      ...this.generateToken(user.id, user.email),
+      ...this.generateToken(updatedUser.id, updatedUser.email),
     };
   }
 
