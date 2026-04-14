@@ -10,10 +10,15 @@ export class CacheService {
       host: process.env.REDIS_HOST || 'localhost',
       port: parseInt(process.env.REDIS_PORT || '6379'),
       password: process.env.REDIS_PASSWORD,
+      tls: {},
       maxRetriesPerRequest: null,        // ← don't retry 20 times, fail fast
       enableOfflineQueue: false,       // ← don't queue commands when disconnected
       lazyConnect: true,               // ← don't crash on startup if Redis is down
-    })
+ retryStrategy: (times) => {     // ← ADD THIS
+    if (times > 3) return null;
+    return Math.min(times * 500, 2000);
+  },
+})
 
     this.redis.on('error', (err) => {
       console.warn('Redis connection error, cache disabled:', err.message)
