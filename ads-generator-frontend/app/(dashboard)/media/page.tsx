@@ -21,6 +21,9 @@ export default function MediaPage() {
   const { data: campaignsResponse } = useCampaigns();
   const { mutate: addMediaToCampaign } = useAddMediaToCampaign();
 
+  // // Define dynamic backend URL (Production OR Localhost)
+  const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+
   const campaigns = (() => {
     const resp = campaignsResponse as any;
     if (!resp) return [];
@@ -34,12 +37,17 @@ export default function MediaPage() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
+  // // Updated handleFile to use FormData for production-ready uploads
   const handleFile = (file: File) => {
     if (!file.type.startsWith('image/')) {
       toast.error('Only image files are allowed')
       return
     }
-    uploadMedia(file, {
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    uploadMedia(formData as any, {
       onSuccess: () => toast.success('File uploaded successfully!'),
       onError: () => toast.error('Failed to upload file'),
     })
@@ -54,11 +62,10 @@ export default function MediaPage() {
 
   if (isLoading) return <LoadingSpinner />
 
-  // Warm, Earthy Tones to match the light brown background
   const warmGradients = [
-    'linear-gradient(135deg, #7f1d1d 0%, #b45309 100%)', // Red to Amber
-    'linear-gradient(135deg, #451a03 0%, #92400e 100%)', // Deep Brown to Orange
-    'linear-gradient(135deg, #78350f 0%, #d97706 100%)', // Amber variant
+    'linear-gradient(135deg, #7f1d1d 0%, #b45309 100%)',
+    'linear-gradient(135deg, #451a03 0%, #92400e 100%)',
+    'linear-gradient(135deg, #78350f 0%, #d97706 100%)',
   ]
 
   return (
@@ -96,7 +103,6 @@ export default function MediaPage() {
         {!media || media.length === 0 ? (
           <EmptyState icon={Sparkles} title="No media yet" description="Upload your professional shots to start building campaigns." />
         ) : (
-          /* True Masonry Grid */
           <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6">
             <AnimatePresence>
               {media.map((item: Media, index: number) => (
@@ -106,19 +112,18 @@ export default function MediaPage() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                 >
-                  {/* Media Wrapper */}
                   <div className="relative rounded-[2rem] overflow-hidden cursor-pointer group-hover:shadow-lg transition-all" onClick={() => setSelectedImage(item)}>
+                    {/* // Updated src logic to use backendUrl and ensure /uploads/ prefix is present */}
                     <img 
-                      src={`http://localhost:3001${item.url}`} 
+                      src={`${backendUrl}${item.url.startsWith('/uploads') ? item.url : `/uploads/${item.url}`}`} 
                       alt={item.originalName} 
                       className="w-full h-auto object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-500" 
                     />
                     
-                    {/* Hover Overlay */}
                     <div className="absolute inset-0 bg-red-950/40 opacity-0 group-hover:opacity-100 transition-all flex flex-col justify-between p-4">
                       <div className="flex justify-end">
                         <div className="p-2 bg-white/20 backdrop-blur-md rounded-xl text-white">
-                           <Maximize2 className="w-4 h-4" />
+                            <Maximize2 className="w-4 h-4" />
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
@@ -128,7 +133,6 @@ export default function MediaPage() {
                     </div>
                   </div>
 
-                  {/* Details & Actions */}
                   <div className="p-4">
                     <div className="flex justify-between items-start mb-4">
                       <div>
@@ -200,9 +204,10 @@ export default function MediaPage() {
               <button className="absolute top-10 right-10 text-white/40 hover:text-white transition-colors">
                 <X className="w-10 h-10" />
               </button>
+              {/* // Updated src logic here as well for the Lightbox view */}
               <motion.img 
                 initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }}
-                src={`http://localhost:3001${selectedImage.url}`} 
+                src={`${backendUrl}${selectedImage.url.startsWith('/uploads') ? selectedImage.url : `/uploads/${selectedImage.url}`}`} 
                 className="max-w-full max-h-full rounded-3xl shadow-2xl border-4 border-white/10"
                 onClick={(e) => e.stopPropagation()}
               />

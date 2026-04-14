@@ -6,18 +6,22 @@ import { UpdateUserDto } from './dto/update-user'
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
+  private readonly userSelection = { //helper function
+    id: true,
+    email: true,
+    name: true,
+    role: true,
+    phone: true,       // Added this
+    isVerified: true,  // Added this
+    createdAt: true,
+    updatedAt: true,
+  };
+
   // Get current logged in user
   async getMe(userId: string) {
     const user = await this.prisma.db.user.findUnique({
       where: { id: userId },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        role: true,
-        createdAt: true,
-        updatedAt: true,
-      },
+      select: this.userSelection, // Use the helper
     })
     if (!user) throw new NotFoundException('User not found')
     return user
@@ -28,14 +32,7 @@ export class UsersService {
     const user = await this.prisma.db.user.update({
       where: { id: userId },
       data: { ...dto },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        role: true,
-        createdAt: true,
-        updatedAt: true,
-      },
+      select: this.userSelection, // Using the helper here
     })
     return user
   }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react' // Added Suspense import
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
@@ -20,7 +20,8 @@ const resetSchema = z.object({
 
 type ResetForm = z.infer<typeof resetSchema>
 
-export default function ResetPasswordPage() {
+// Move the logic into a sub-component to use Suspense correctly
+function ResetPasswordContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const token = searchParams.get('token') || ''
@@ -38,7 +39,7 @@ export default function ResetPasswordPage() {
 
   const onSubmit = (data: ResetForm) => {
     if (!token) {
-      toast.error('Invalid reset token')
+      toast.error('Invalid or missing reset token')
       return
     }
     resetPassword(
@@ -203,5 +204,18 @@ export default function ResetPasswordPage() {
         </p>
       </div>
     </div>
+  )
+}
+
+// 3. THIS IS THE WRAPPER PART
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-[#080808]">
+        <Loader2 className="w-10 h-10 animate-spin text-amber-500" />
+      </div>
+    }>
+      <ResetPasswordContent />
+    </Suspense>
   )
 }

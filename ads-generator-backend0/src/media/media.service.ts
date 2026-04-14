@@ -46,8 +46,8 @@ private uploadDir = path.join(process.cwd(), 'uploads');
         originalName: file.originalname,
         mimetype: file.mimetype,
         size: file.size,
-        //url: filename,
-        url: `/uploads/${filename}`,
+        url: filename,
+        //url: `/uploads/${filename}`,
         userId,
       },
     })
