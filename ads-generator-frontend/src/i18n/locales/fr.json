@@ -1,0 +1,110 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "error": "Quelque chose a mal tourné",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "create": "Créer",
+    "update": "Mettre à jour",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "submit": "Soumettre",
+    "back": "Retour",
+    "next": "Suivant",
+    "yes": "Oui",
+    "no": "Non",
+    "confirm": "Confirmer"
+  },
+  "auth": {
+    "login": "Connexion",
+    "register": "S'inscrire",
+    "logout": "Déconnexion",
+    "email": "Email",
+    "password": "Mot de passe",
+    "name": "Nom complet",
+    "confirmPassword": "Confirmer le mot de passe",
+    "forgotPassword": "Mot de passe oublié?",
+    "resetPassword": "Réinitialiser le mot de passe",
+    "changePassword": "Changer le mot de passe",
+    "oldPassword": "Ancien mot de passe",
+    "newPassword": "Nouveau mot de passe",
+    "verifyOtp": "Vérifier OTP",
+    "sendOtp": "Envoyer OTP",
+    "otp": "Entrer OTP",
+    "googleLogin": "Continuer avec Google",
+    "noAccount": "Pas de compte?",
+    "haveAccount": "Déjà un compte?",
+    "registerSuccess": "Inscription réussie! Veuillez vérifier votre email.",
+    "loginSuccess": "Connexion réussie!",
+    "otpSent": "OTP envoyé avec succès!",
+    "otpVerified": "OTP vérifié avec succès!"
+  },
+  "nav": {
+    "dashboard": "Tableau de bord",
+    "ads": "Publicités",
+    "campaigns": "Campagnes",
+    "ai": "Générateur IA",
+    "media": "Médias",
+    "settings": "Paramètres",
+    "profile": "Profil"
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "totalAds": "Total des publicités",
+    "totalCampaigns": "Total des campagnes",
+    "totalClicks": "Total des clics",
+    "totalImpressions": "Total des impressions",
+    "recentAds": "Publicités récentes",
+    "welcome": "Bon retour"
+  },
+  "ads": {
+    "title": "Publicités",
+    "createAd": "Créer une publicité",
+    "editAd": "Modifier la publicité",
+    "deleteAd": "Supprimer la publicité",
+    "adTitle": "Titre de la publicité",
+    "adBody": "Contenu de la publicité",
+    "platform": "Plateforme",
+    "status": "Statut",
+    "noAds": "Aucune publicité trouvée",
+    "createFirst": "Créez votre première publicité"
+  },
+  "campaigns": {
+    "title": "Campagnes",
+    "createCampaign": "Créer une campagne",
+    "editCampaign": "Modifier la campagne",
+    "deleteCampaign": "Supprimer la campagne",
+    "campaignName": "Nom de la campagne",
+    "description": "Description",
+    "status": "Statut",
+    "noCampaigns": "Aucune campagne trouvée",
+    "createFirst": "Créez votre première campagne"
+  },
+  "ai": {
+    "title": "Générateur de publicités IA",
+    "prompt": "Décrivez votre publicité",
+    "generate": "Générer une publicité",
+    "generateVariations": "Générer des variations",
+    "tone": "Ton",
+    "targetAudience": "Public cible",
+    "productName": "Nom du produit",
+    "generating": "Génération en cours..."
+  },
+  "media": {
+    "title": "Médias",
+    "upload": "Télécharger un fichier",
+    "noMedia": "Aucun média trouvé",
+    "uploadFirst": "Téléchargez votre premier fichier"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "profile": "Profil",
+    "security": "Sécurité",
+    "language": "Langue",
+    "theme": "Thème",
+    "darkMode": "Mode sombre",
+    "lightMode": "Mode clair"
+  }
+}

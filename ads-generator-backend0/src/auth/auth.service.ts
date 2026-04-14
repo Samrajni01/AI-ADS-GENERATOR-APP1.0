@@ -268,50 +268,93 @@ export class AuthService {
 
   // Validate user for local strategy
   async validateUser(email: string, password: string) {
-    const user = await this.prisma.db.user.findUnique({ where: { email } });
-    if (!user || !user.password) return null;
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return null;
-    const { password: _, ...result } = user;
-    return result;
+  const user = await this.prisma.db.user.findUnique({ where: { email } });
+  
+  if (!user || !user.password) return null;
+
+  // FIX: If isVerified is false, reject the login immediately
+  if (user.isVerified === false) {
+    throw new UnauthorizedException('Account not verified. Please verify your OTP first.');
   }
+
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) return null;
+
+  const { password: _, ...result } = user;
+  return result;
+}
 
   // Register with email/password
   async register(dto: RegisterDto) {
-    try {
-      const existing = await this.prisma.db.user.findUnique({
+  try {
+    // 1. Check if user already exists
+    const existing = await this.prisma.db.user.findUnique({
+      where: { email: dto.email },
+    });
+
+    // Generate these early so we can use them for Create OR Update
+    const hashed = await bcrypt.hash(dto.password, 10);
+    const otp = this.otpService.generateOtp();
+    const otpExpiry = this.otpService.generateExpiry();
+
+    let user;
+
+    if (existing) {
+      // 2. If the existing user is ALREADY verified, then we block them
+      if (existing.isVerified) {
+        throw new ConflictException('Email already in use and verified. Please login.');
+      }
+
+      // 3. IDEMPOTENT FLOW: If they aren't verified, just update their record with a new OTP
+      console.log(`Updating unverified user: ${dto.email} with a fresh OTP.`);
+      user = await this.prisma.db.user.update({
         where: { email: dto.email },
+        data: {
+          password: hashed, // Update password in case they want to change it
+          name: dto.name,
+          otpCode: otp,
+          otpExpiry,
+        },
       });
-      if (existing) throw new ConflictException('Email already in use');
-
-      const hashed = await bcrypt.hash(dto.password, 10);
-      const otp = this.otpService.generateOtp();
-      const otpExpiry = this.otpService.generateExpiry();
-
-      const user = await this.prisma.db.user.create({
+    } else {
+      // 4. NEW USER FLOW: Standard creation
+      user = await this.prisma.db.user.create({
         data: {
           email: dto.email,
           password: hashed,
           name: dto.name,
           otpCode: otp,
           otpExpiry,
+          isVerified: false,
         },
       });
-
-      // Keep this commented out until you verify registration works in Prisma Studio
-      // await this.otpService.sendEmailOtp(user.email, otp)
-
-      const { password, ...result } = user;
-      return {
-        user: result,
-        message: 'Registration successful!',
-      };
-    } catch (error) {
-      console.error('--- REGISTRATION ERROR ---');
-      console.error(error);
-      throw new InternalServerErrorException(error.message || 'Database Error');
     }
+
+    // 5. Send OTP (Same logic as before)
+    console.log(`Attempting to send OTP to ${user.email}...`);
+    try {
+      await this.otpService.sendEmailOtp(user.email, otp);
+    } catch (mailError) {
+      console.error('Mail delivery failed, but user record exists:', mailError);
+    }
+
+    // Use password: _ to avoid variable shadowing
+    const { password: _, ...result } = user;
+    
+    return {
+      user: result,
+      message: existing 
+        ? 'Account already existed but was unverified. A new OTP has been sent!' 
+        : 'Registration successful!',
+    };
+  } catch (error) {
+    // Make sure we don't accidentally turn our ConflictException into a 500 error
+    if (error instanceof ConflictException) throw error;
+    
+    console.error('--- REGISTRATION ERROR ---', error);
+    throw new InternalServerErrorException(error.message || 'Database Error');
   }
+}
 
   // Login with email/password
   async login(user: any) {
@@ -391,18 +434,18 @@ export class AuthService {
     if (user.otpCode !== dto.otp) throw new BadRequestException('Invalid OTP');
     if (new Date() > user.otpExpiry) throw new BadRequestException('OTP expired');
 
-    await this.prisma.db.user.update({
-      where: { id: user.id },
-      data: {
-        isVerified: true,
-        otpCode: null,
-        otpExpiry: null,
-      },
-    });
+   const updatedUser = await this.prisma.db.user.update({
+    where: { id: user.id },
+    data: {
+      isVerified: true, // NOW they can log in
+      otpCode: null,
+      otpExpiry: null,
+    },
+  });
 
     return {
       message: 'OTP verified successfully',
-      ...this.generateToken(user.id, user.email),
+      ...this.generateToken(updatedUser.id, updatedUser.email),
     };
   }
 

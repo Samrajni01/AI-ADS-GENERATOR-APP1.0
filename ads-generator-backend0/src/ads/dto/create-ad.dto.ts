@@ -3,17 +3,21 @@ import { Platform } from '@prisma/client'
 
 export class CreateAdDto {
   @IsString()
-  title: string
+  title!: string
 
   @IsString()
-  body: string
+  body!: string
 
   @IsEnum(Platform)
-  platform: Platform
+  platform!: Platform
 
   @IsString()
   @IsOptional()
   imageUrl?: string
+
+  @IsString()
+  @IsOptional()
+  imagePrompt?: string
 
   @IsString()
   @IsOptional()

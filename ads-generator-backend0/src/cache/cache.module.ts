@@ -9,6 +9,18 @@ import { CacheService } from './cache.service'
       redis: {
         host: process.env.REDIS_HOST || 'localhost',
         port: parseInt(process.env.REDIS_PORT || '6379'),
+        tls: {},
+        maxRetriesPerRequest: 1,
+enableOfflineQueue: false,
+      },
+      settings: {
+        stalledInterval: 300000,
+        maxStalledCount: 1,
+      },
+      defaultJobOptions: {
+        removeOnComplete: true,
+        removeOnFail: true,
+        attempts: 3,
       },
     }),
   ],
