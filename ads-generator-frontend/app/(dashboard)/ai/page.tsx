@@ -269,7 +269,7 @@ export default function AiPage() {
             <div className="rounded-3xl border p-8 bg-white/70 backdrop-blur-sm shadow-xl border-emerald-100">
               {generatedAd.ad.imageUrl && (
                 <div className="mb-8 rounded-2xl overflow-hidden border-4 border-white shadow-2xl aspect-video relative">
-                  <img src={`http://localhost:3001${generatedAd.ad.imageUrl}`} alt="Visual" className="w-full h-full object-cover" />
+                  <img src={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}${generatedAd.ad.imageUrl}`} alt="Visual" className="w-full h-full object-cover" />
                 </div>
               )}
               <div className="flex items-center justify-between mb-6 pb-6 border-b border-emerald-900/10">
