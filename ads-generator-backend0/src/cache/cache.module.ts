@@ -11,7 +11,7 @@ import { CacheService } from './cache.service'
         port: parseInt(process.env.REDIS_PORT || '6379'),
         password: process.env.REDIS_PASSWORD,
         tls: {},
-        maxRetriesPerRequest: 1,
+        maxRetriesPerRequest: null,
 enableOfflineQueue: true,
     lazyConnect: true, 
       },
