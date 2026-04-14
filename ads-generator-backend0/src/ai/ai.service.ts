@@ -162,9 +162,9 @@ export class AiService {
             const media = await this.mediaService.uploadFile(mockFile, userId);
             await this.prisma.db.ad.update({
               where: { id: ad.id },
-              data: { imageUrl: `/uploads/${media.url}` }
+              data: { imageUrl: media.url }
             });
-            ad.imageUrl = `/uploads/${media.url}`;
+            ad.imageUrl = media.url;
           } catch (e) {
             console.error('Image upload failed, continuing anyway:', e);
           }
