@@ -12,7 +12,8 @@ import { CacheService } from './cache.service'
         password: process.env.REDIS_PASSWORD,
         tls: {},
         maxRetriesPerRequest: 1,
-enableOfflineQueue: false,
+enableOfflineQueue: true,
+    lazyConnect: true, 
       },
       settings: {
         stalledInterval: 300000,
